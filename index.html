@@ -3,444 +3,669 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreamPrime - Your Premium Streaming Service</title>
+    <title>StreamPrime - Complete Movie Collection</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <style>
-        body { 
-            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f3a 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        .hero-gradient {
-            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
-        }
-        .content-card {
+        .card-hover {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 8px;
-            overflow: hidden;
         }
-        .content-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-        .nav-link {
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-            color: #00d4ff;
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
         .scroll-container {
+            overflow-x: auto;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
         .scroll-container::-webkit-scrollbar {
             display: none;
         }
-        .play-button {
-            background: rgba(255,255,255,0.9);
+        .hero-overlay {
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%);
+        }
+        .genre-tag {
+            background: rgba(255,255,255,0.2);
             backdrop-filter: blur(10px);
         }
-        .category-section {
-            margin-bottom: 3rem;
-        }
-        .streaming-thumbnail {
-            aspect-ratio: 16/9;
-            object-fit: cover;
-        }
-        .poster-image {
-            aspect-ratio: 2/3;
-            object-fit: cover;
+        .search-overlay {
+            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.8);
         }
     </style>
 </head>
-<body class="text-white">
-    <!-- Header -->
-    <header class="fixed top-0 w-full z-50 bg-black bg-opacity-80 backdrop-blur-md">
-        <nav class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-8">
-                    <div class="text-2xl font-bold text-blue-400">
-                        <i class="fas fa-play-circle mr-2"></i>StreamPrime
+<body class="bg-gray-900 text-white">
+    <!-- Navigation Header -->
+    <nav class="bg-black bg-opacity-90 backdrop-blur-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-blue-400">StreamPrime</h1>
                     </div>
-                    <div class="hidden md:flex space-x-6">
-                        <a href="#" class="nav-link">Home</a>
-                        <a href="#" class="nav-link">Movies</a>
-                        <a href="#" class="nav-link">TV Shows</a>
-                        <a href="#" class="nav-link">Originals</a>
-                        <a href="#" class="nav-link">Live TV</a>
-                        <a href="#" class="nav-link">Sports</a>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#home" class="text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                            <a href="#movies" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Movies</a>
+                            <a href="#series" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">TV Shows</a>
+                            <a href="#genres" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Genres</a>
+                            <a href="#watchlist" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">My List</a>
+                        </div>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <input type="text" placeholder="Search movies, shows..." 
-                               class="bg-gray-800 rounded-full px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
-                    </div>
-                    <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition">
-                        <i class="fas fa-user mr-2"></i>Profile
+                    <button onclick="toggleSearch()" class="text-white hover:text-blue-300">
+                        <i class="fas fa-search text-lg"></i>
                     </button>
+                    <button class="text-white hover:text-blue-300">
+                        <i class="fas fa-bell text-lg"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <img class="h-8 w-8 rounded-full" src="https://via.placeholder.com/32x32/4F46E5/FFFFFF?text=U" alt="User">
+                        <span class="text-sm">My Account</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="fixed inset-0 search-overlay z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-gray-800 rounded-lg p-6 w-full max-w-2xl">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-search text-blue-400 text-xl"></i>
+                    <input type="text" id="searchInput" placeholder="Search movies, shows, actors..." class="bg-transparent text-white placeholder-gray-400 flex-1 text-lg outline-none">
+                    <button onclick="toggleSearch()" class="text-gray-400 hover:text-white">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div id="searchResults" class="mt-6 space-y-4 max-h-96 overflow-y-auto">
+                    <!-- Search results will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
-    <section class="relative h-screen flex items-center" style="background-image: url('https://images.thedirect.com/media/article_full/New_Marvel_DP_Banner.jpg'); background-size: cover; background-position: center;">
-        <div class="hero-gradient absolute inset-0"></div>
-        <div class="relative z-10 container mx-auto px-6">
-            <div class="max-w-2xl">
-                <h1 class="text-5xl font-bold mb-4">Marvel Studios Collection</h1>
-                <p class="text-xl mb-6 text-gray-300">Experience the ultimate superhero saga with our exclusive Marvel collection. Watch all your favorite heroes in stunning 4K quality.</p>
+    <div class="relative h-screen">
+        <div class="absolute inset-0">
+            <img src="https://images.thedirect.com/media/article_full/New_Marvel_DP_Banner.jpg" alt="Featured Content" class="w-full h-full object-cover">
+            <div class="hero-overlay absolute inset-0"></div>
+        </div>
+        <div class="relative z-10 flex items-center h-full px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl sm:text-6xl font-bold mb-4">Deadpool & Wolverine</h1>
+                <div class="flex items-center space-x-4 mb-6">
+                    <span class="genre-tag px-3 py-1 rounded-full text-sm">Action</span>
+                    <span class="genre-tag px-3 py-1 rounded-full text-sm">Comedy</span>
+                    <span class="genre-tag px-3 py-1 rounded-full text-sm">Superhero</span>
+                    <span class="text-green-400 font-semibold">98% Match</span>
+                </div>
+                <p class="text-lg mb-8 max-w-2xl">The irreverent superhero duo returns in an epic multiverse adventure that breaks the fourth wall and delivers unprecedented action and humor.</p>
                 <div class="flex space-x-4">
-                    <button class="play-button text-black px-8 py-3 rounded-lg font-semibold flex items-center hover:bg-white transition">
-                        <i class="fas fa-play mr-2"></i>Play Now
+                    <button class="bg-white text-black px-8 py-3 rounded-md font-semibold hover:bg-gray-200 transition duration-300">
+                        <i class="fas fa-play mr-2"></i>Play
                     </button>
-                    <button class="bg-gray-700 bg-opacity-80 px-8 py-3 rounded-lg font-semibold flex items-center hover:bg-opacity-100 transition">
-                        <i class="fas fa-plus mr-2"></i>My List
+                    <button class="bg-gray-700 bg-opacity-70 px-8 py-3 rounded-md font-semibold hover:bg-gray-600 transition duration-300">
+                        <i class="fas fa-info-circle mr-2"></i>More Info
+                    </button>
+                    <button onclick="addToWatchlist('Deadpool & Wolverine')" class="bg-gray-700 bg-opacity-70 px-4 py-3 rounded-md hover:bg-gray-600 transition duration-300">
+                        <i class="fas fa-plus"></i>
                     </button>
                 </div>
-                <div class="mt-6 flex items-center space-x-4 text-sm">
-                    <span class="bg-yellow-600 px-2 py-1 rounded">HD</span>
-                    <span>2024</span>
-                    <span>Action, Adventure, Sci-Fi</span>
-                    <span class="flex items-center"><i class="fas fa-star text-yellow-400 mr-1"></i>8.5</span>
-                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Continue Watching -->
-    <section class="category-section container mx-auto px-6 py-8">
-        <h2 class="text-2xl font-bold mb-6">Continue Watching</h2>
-        <div class="flex space-x-4 overflow-x-auto scroll-container pb-4">
-            <div class="content-card min-w-80 bg-gray-800 relative">
-                <img src="https://govisually.com/wp-content/uploads/2021/10/stranger-things-thumbnail-1024x600.png" 
-                     alt="Stranger Things" class="streaming-thumbnail w-full">
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                    <h3 class="font-semibold">Stranger Things</h3>
-                    <p class="text-sm text-gray-300">S4 E1 • 42 min left</p>
-                    <div class="w-full bg-gray-700 rounded-full h-1 mt-2">
-                        <div class="bg-red-600 h-1 rounded-full" style="width: 65%"></div>
+    <!-- Main Content -->
+    <main class="relative z-10 -mt-32 pb-16">
+        
+        <!-- 2024 Top Movies -->
+        <section class="mb-12">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold mb-6">2024 Top Movies</h2>
+                <div class="scroll-container flex space-x-4 pb-4">
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Dune: Part Two')">
+                        <img src="https://m.media-amazon.com/images/I/81Rrx-Bv+6L._UF894,1000_QL80_.jpg" alt="Dune: Part Two" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Dune: Part Two</h3>
+                            <p class="text-sm text-gray-400">Epic sci-fi sequel</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Deadpool & Wolverine')">
+                        <img src="https://i.ebayimg.com/images/g/fWYAAOSwRipmJqsb/s-l1200.jpg" alt="Deadpool & Wolverine" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Deadpool & Wolverine</h3>
+                            <p class="text-sm text-gray-400">Marvel superhero action-comedy</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Inside Out 2')">
+                        <img src="https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=Inside+Out+2" alt="Inside Out 2" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Inside Out 2</h3>
+                            <p class="text-sm text-gray-400">Pixar animated sequel</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('The Wild Robot')">
+                        <img src="https://via.placeholder.com/300x450/4ECDC4/FFFFFF?text=The+Wild+Robot" alt="The Wild Robot" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">The Wild Robot</h3>
+                            <p class="text-sm text-gray-400">Animated family film</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Anora')">
+                        <img src="https://via.placeholder.com/300x450/45B7D1/FFFFFF?text=Anora" alt="Anora" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Anora</h3>
+                            <p class="text-sm text-gray-400">Critical acclaim drama</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Rebel Ridge')">
+                        <img src="https://via.placeholder.com/300x450/F7931E/FFFFFF?text=Rebel+Ridge" alt="Rebel Ridge" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Rebel Ridge</h3>
+                            <p class="text-sm text-gray-400">Netflix action thriller</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="content-card min-w-80 bg-gray-800 relative">
-                <img src="https://blog-frontend.envato.com/cdn-cgi/image/width=1024,quality=75,format=auto/uploads/sites/2/2024/10/Netflix-thumbnails.jpg" 
-                     alt="Popular Series" class="streaming-thumbnail w-full">
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                    <h3 class="font-semibold">The Crown</h3>
-                    <p class="text-sm text-gray-300">S3 E5 • 28 min left</p>
-                    <div class="w-full bg-gray-700 rounded-full h-1 mt-2">
-                        <div class="bg-red-600 h-1 rounded-full" style="width: 40%"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-card min-w-80 bg-gray-800 relative">
-                <img src="https://miro.medium.com/v2/resize:fit:936/0*zLd07M81R_Puay6v.png" 
-                     alt="Action Movie" class="streaming-thumbnail w-full">
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                    <h3 class="font-semibold">The Batman</h3>
-                    <p class="text-sm text-gray-300">1h 23 min left</p>
-                    <div class="w-full bg-gray-700 rounded-full h-1 mt-2">
-                        <div class="bg-red-600 h-1 rounded-full" style="width: 75%"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Trending Now -->
-    <section class="category-section container mx-auto px-6">
-        <h2 class="text-2xl font-bold mb-6">Trending Now</h2>
-        <div class="flex space-x-4 overflow-x-auto scroll-container pb-4">
-            <div class="content-card min-w-64 bg-gray-800">
-                <img src="https://images.fandango.com/ImageRenderer/820/0/redesign/static/img/default_poster.png/0/images/masterrepository/fandango/236103/STREAM_GAMENIGHT-1080x1600_B1-0821-Date.jpg" 
-                     alt="Stream" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Stream</h3>
-                    <div class="flex items-center justify-between text-sm text-gray-300">
-                        <span>2024</span>
-                        <span class="flex items-center"><i class="fas fa-star text-yellow-400 mr-1"></i>7.8</span>
+        <!-- Marvel & DC Collection -->
+        <section class="mb-12">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold mb-6">Marvel & DC Collection</h2>
+                <div class="scroll-container flex space-x-4 pb-4">
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Avengers: Endgame')">
+                        <img src="https://via.placeholder.com/300x450/8E44AD/FFFFFF?text=Avengers+Endgame" alt="Avengers: Endgame" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Avengers: Endgame</h3>
+                            <p class="text-sm text-gray-400">Epic superhero finale</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Spider-Man: No Way Home')">
+                        <img src="https://cdn.marvel.com/content/1x/snh_online_6072x9000_hero_03_opt.jpg" alt="Spider-Man: No Way Home" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Spider-Man: No Way Home</h3>
+                            <p class="text-sm text-gray-400">Multiverse adventure</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Avengers: Infinity War')">
+                        <img src="https://via.placeholder.com/300x450/9B59B6/FFFFFF?text=Infinity+War" alt="Avengers: Infinity War" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Avengers: Infinity War</h3>
+                            <p class="text-sm text-gray-400">Superhero ensemble</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Iron Man')">
+                        <img src="https://via.placeholder.com/300x450/E74C3C/FFFFFF?text=Iron+Man" alt="Iron Man" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Iron Man</h3>
+                            <p class="text-sm text-gray-400">Tony Stark saga</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Wonder Woman')">
+                        <img src="https://via.placeholder.com/300x450/3498DB/FFFFFF?text=Wonder+Woman" alt="Wonder Woman" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Wonder Woman</h3>
+                            <p class="text-sm text-gray-400">DC superhero</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('The Batman')">
+                        <img src="https://via.placeholder.com/300x450/2C3E50/FFFFFF?text=The+Batman" alt="The Batman" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">The Batman</h3>
+                            <p class="text-sm text-gray-400">Dark Knight returns</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="content-card min-w-64 bg-gray-800">
-                <img src="https://s.movieinsider.com/images/p/741961_m1697479493.jpg" 
-                     alt="Stream Movie" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Stream</h3>
-                    <div class="flex items-center justify-between text-sm text-gray-300">
-                        <span>2024</span>
-                        <span class="flex items-center"><i class="fas fa-star text-yellow-400 mr-1"></i>8.2</span>
-                    </div>
-                </div>
-            </div>
-            <div class="content-card min-w-64 bg-gray-800">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d0/Carry_On_film_poster.jpg/250px-Carry_On_film_poster.jpg" 
-                     alt="Carry-On" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Carry-On</h3>
-                    <div class="flex items-center justify-between text-sm text-gray-300">
-                        <span>2024</span>
-                        <span class="flex items-center"><i class="fas fa-star text-yellow-400 mr-1"></i>7.5</span>
-                    </div>
-                </div>
-            </div>
-            <div class="content-card min-w-64 bg-gray-800">
-                <img src="https://m.media-amazon.com/images/I/31aI6BgWr2L.jpg" 
-                     alt="Hero" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Hero</h3>
-                    <div class="flex items-center justify-between text-sm text-gray-300">
-                        <span>2002</span>
-                        <span class="flex items-center"><i class="fas fa-star text-yellow-400 mr-1"></i>8.5</span>
-                    </div>
-                </div>
-            </div>
-            <div class="content-card min-w-64 bg-gray-800">
-                <img src="https://cdn.bsp.partner-portal.pv.amazon.dev/dims4/default/675f95a/2147483647/strip/true/crop/1920x2560+0+0/resize/750x1000!/quality/90/?url=https%3A%2F%2Fapvtd-production-web.s3.us-east-1.amazonaws.com%2Fbrightspot%2F88%2F13%2Fe82d166b455998c8aac1d2980fcb%2Fvc-artwork-types-movies-box-art-3x4.png" 
-                     alt="Amazon Original" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Prime Original</h3>
-                    <div class="flex items-center justify-between text-sm text-gray-300">
-                        <span>2024</span>
-                        <span class="flex items-center"><i class="fas fa-star text-yellow-400 mr-1"></i>9.1</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Prime Originals -->
-    <section class="category-section container mx-auto px-6">
-        <h2 class="text-2xl font-bold mb-6">
-            <i class="fas fa-crown text-yellow-400 mr-2"></i>Prime Originals
-        </h2>
-        <div class="flex space-x-4 overflow-x-auto scroll-container pb-4">
-            <div class="content-card min-w-80 bg-gray-800 relative">
-                <img src="https://www.denofgeek.com/wp-content/uploads/2023/08/Netflix-Thumbs-Art-Image.jpg" 
-                     alt="Prime Original Series" class="streaming-thumbnail w-full">
-                <div class="absolute top-4 left-4">
-                    <span class="bg-blue-600 px-2 py-1 rounded text-sm font-semibold">PRIME</span>
-                </div>
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                    <h3 class="font-semibold">The Boys</h3>
-                    <p class="text-sm text-gray-300">Superhero satire series</p>
+        <!-- Netflix Originals -->
+        <section class="mb-12">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold mb-6">Netflix Originals</h2>
+                <div class="scroll-container flex space-x-4 pb-4">
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Stranger Things')">
+                        <img src="https://m.media-amazon.com/images/I/81OK7odSLfS._AC_UF894,1000_QL80_.jpg" alt="Stranger Things" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Stranger Things</h3>
+                            <p class="text-sm text-gray-400">Supernatural horror series</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Wednesday')">
+                        <img src="https://via.placeholder.com/300x450/2C3E50/FFFFFF?text=Wednesday" alt="Wednesday" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Wednesday</h3>
+                            <p class="text-sm text-gray-400">Addams Family spin-off</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('The Crown')">
+                        <img src="https://via.placeholder.com/300x450/F39C12/FFFFFF?text=The+Crown" alt="The Crown" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">The Crown</h3>
+                            <p class="text-sm text-gray-400">Royal drama series</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Squid Game')">
+                        <img src="https://via.placeholder.com/300x450/E74C3C/FFFFFF?text=Squid+Game" alt="Squid Game" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Squid Game</h3>
+                            <p class="text-sm text-gray-400">Korean survival thriller</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Money Heist')">
+                        <img src="https://via.placeholder.com/300x450/8E44AD/FFFFFF?text=Money+Heist" alt="Money Heist" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Money Heist</h3>
+                            <p class="text-sm text-gray-400">Spanish heist series</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Bridgerton')">
+                        <img src="https://via.placeholder.com/300x450/FF69B4/FFFFFF?text=Bridgerton" alt="Bridgerton" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Bridgerton</h3>
+                            <p class="text-sm text-gray-400">Period romance</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="content-card min-w-80 bg-gray-800 relative">
-                <img src="https://govisually.com/wp-content/uploads/2021/10/Netflix-menu-1-1.png" 
-                     alt="Prime Content" class="streaming-thumbnail w-full">
-                <div class="absolute top-4 left-4">
-                    <span class="bg-blue-600 px-2 py-1 rounded text-sm font-semibold">PRIME</span>
-                </div>
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                    <h3 class="font-semibold">Marvelous Mrs. Maisel</h3>
-                    <p class="text-sm text-gray-300">Comedy-drama series</p>
-                </div>
-            </div>
-            <div class="content-card min-w-80 bg-gray-800 relative">
-                <img src="https://static.andersenlab.com/andersenlab/new-andersensite/cases/cinemeye/design-preview/big.jpg" 
-                     alt="Streaming Interface" class="streaming-thumbnail w-full">
-                <div class="absolute top-4 left-4">
-                    <span class="bg-blue-600 px-2 py-1 rounded text-sm font-semibold">PRIME</span>
-                </div>
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                    <h3 class="font-semibold">The Terminal List</h3>
-                    <p class="text-sm text-gray-300">Action thriller series</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Recently Added -->
-    <section class="category-section container mx-auto px-6">
-        <h2 class="text-2xl font-bold mb-6">Recently Added</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="content-card bg-gray-800">
-                <img src="https://blog-frontend.envato.com/cdn-cgi/image/width=1024,quality=75,format=auto/uploads/sites/2/2024/10/Creature-from-the-Black-Lagoon-1954.jpg" 
-                     alt="Classic Movie" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Creature from the Black Lagoon</h3>
-                    <p class="text-sm text-gray-300 mb-2">Classic Horror • 1954</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-green-400">Recently Added</span>
-                        <span class="flex items-center text-sm"><i class="fas fa-star text-yellow-400 mr-1"></i>7.2</span>
+        <!-- Classic Cinema -->
+        <section class="mb-12">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold mb-6">Classic Cinema</h2>
+                <div class="scroll-container flex space-x-4 pb-4">
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('The Godfather')">
+                        <img src="https://via.placeholder.com/300x450/2C3E50/FFFFFF?text=The+Godfather" alt="The Godfather" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">The Godfather</h3>
+                            <p class="text-sm text-gray-400">Crime saga</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Pulp Fiction')">
+                        <img src="https://via.placeholder.com/300x450/E74C3C/FFFFFF?text=Pulp+Fiction" alt="Pulp Fiction" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Pulp Fiction</h3>
+                            <p class="text-sm text-gray-400">Quentin Tarantino classic</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('The Shawshank Redemption')">
+                        <img src="https://via.placeholder.com/300x450/3498DB/FFFFFF?text=Shawshank" alt="The Shawshank Redemption" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">The Shawshank Redemption</h3>
+                            <p class="text-sm text-gray-400">Prison drama</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Titanic')">
+                        <img src="https://via.placeholder.com/300x450/3498DB/FFFFFF?text=Titanic" alt="Titanic" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Titanic</h3>
+                            <p class="text-sm text-gray-400">Epic romance</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('The Dark Knight')">
+                        <img src="https://via.placeholder.com/300x450/2C3E50/FFFFFF?text=Dark+Knight" alt="The Dark Knight" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">The Dark Knight</h3>
+                            <p class="text-sm text-gray-400">Batman thriller</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Star Wars')">
+                        <img src="https://via.placeholder.com/300x450/F39C12/FFFFFF?text=Star+Wars" alt="Star Wars" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Star Wars</h3>
+                            <p class="text-sm text-gray-400">Space opera</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="content-card bg-gray-800">
-                <img src="https://img.freepik.com/premium-vector/movie-poster-movie-super-hero_1164355-1204.jpg" 
-                     alt="Superhero Movie" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Super Hero</h3>
-                    <p class="text-sm text-gray-300 mb-2">Action • 2024</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-green-400">Recently Added</span>
-                        <span class="flex items-center text-sm"><i class="fas fa-star text-yellow-400 mr-1"></i>8.0</span>
-                    </div>
-                </div>
-            </div>
-            <div class="content-card bg-gray-800">
-                <img src="https://cdn1.vectorstock.com/i/1000x1000/87/85/online-movie-theater-streaming-service-poster-vector-38418785.jpg" 
-                     alt="Streaming Service" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Cinema Experience</h3>
-                    <p class="text-sm text-gray-300 mb-2">Documentary • 2024</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-green-400">Recently Added</span>
-                        <span class="flex items-center text-sm"><i class="fas fa-star text-yellow-400 mr-1"></i>7.8</span>
-                    </div>
-                </div>
-            </div>
-            <div class="content-card bg-gray-800">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d0/Carry_On_film_poster.jpg/250px-Carry_On_film_poster.jpg" 
-                     alt="Carry-On" class="poster-image w-full">
-                <div class="p-4">
-                    <h3 class="font-semibold mb-2">Carry-On</h3>
-                    <p class="text-sm text-gray-300 mb-2">Thriller • 2024</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-green-400">Recently Added</span>
-                        <span class="flex items-center text-sm"><i class="fas fa-star text-yellow-400 mr-1"></i>7.5</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Prime Shopping Integration -->
-    <section class="category-section container mx-auto px-6">
-        <div class="bg-gradient-to-r from-blue-900 to-purple-900 rounded-xl p-8">
-            <h2 class="text-3xl font-bold mb-4">
-                <i class="fas fa-shopping-cart mr-2"></i>Prime Shopping Benefits
-            </h2>
-            <p class="text-xl mb-6">Get free shipping, exclusive deals, and more with your Prime membership</p>
-            <div class="flex flex-wrap gap-4 mb-6">
-                <div class="bg-white bg-opacity-10 rounded-lg p-4 flex-1 min-w-48">
-                    <i class="fas fa-shipping-fast text-2xl text-blue-400 mb-2"></i>
-                    <h3 class="font-semibold mb-2">Free Shipping</h3>
-                    <p class="text-sm text-gray-300">Free same-day, one-day, and two-day shipping on millions of items</p>
-                </div>
-                <div class="bg-white bg-opacity-10 rounded-lg p-4 flex-1 min-w-48">
-                    <i class="fas fa-percent text-2xl text-green-400 mb-2"></i>
-                    <h3 class="font-semibold mb-2">Exclusive Deals</h3>
-                    <p class="text-sm text-gray-300">Early access to Lightning Deals and Prime-exclusive offers</p>
-                </div>
-                <div class="bg-white bg-opacity-10 rounded-lg p-4 flex-1 min-w-48">
-                    <i class="fas fa-music text-2xl text-purple-400 mb-2"></i>
-                    <h3 class="font-semibold mb-2">Prime Music</h3>
-                    <p class="text-sm text-gray-300">Stream millions of songs and podcasts ad-free</p>
+        <!-- Popular Action -->
+        <section class="mb-12">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold mb-6">Popular Action</h2>
+                <div class="scroll-container flex space-x-4 pb-4">
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Mission: Impossible')">
+                        <img src="https://via.placeholder.com/300x450/E74C3C/FFFFFF?text=Mission+Impossible" alt="Mission: Impossible" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Mission: Impossible</h3>
+                            <p class="text-sm text-gray-400">Tom Cruise stunts</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Fast & Furious')">
+                        <img src="https://via.placeholder.com/300x450/F39C12/FFFFFF?text=Fast+Furious" alt="Fast & Furious" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Fast & Furious</h3>
+                            <p class="text-sm text-gray-400">High-speed action</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('John Wick')">
+                        <img src="https://via.placeholder.com/300x450/2C3E50/FFFFFF?text=John+Wick" alt="John Wick" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">John Wick</h3>
+                            <p class="text-sm text-gray-400">Stylized action</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Top Gun: Maverick')">
+                        <img src="https://via.placeholder.com/300x450/3498DB/FFFFFF?text=Top+Gun" alt="Top Gun: Maverick" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Top Gun: Maverick</h3>
+                            <p class="text-sm text-gray-400">Aviation action</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('1917')">
+                        <img src="https://via.placeholder.com/300x450/8E44AD/FFFFFF?text=1917" alt="1917" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">1917</h3>
+                            <p class="text-sm text-gray-400">War epic</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button class="bg-orange-600 hover:bg-orange-700 px-8 py-3 rounded-lg font-semibold transition">
-                Shop Prime Deals
-            </button>
-        </div>
-    </section>
+        </section>
+
+        <!-- Horror & Thriller -->
+        <section class="mb-12">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold mb-6">Horror & Thriller</h2>
+                <div class="scroll-container flex space-x-4 pb-4">
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('A Quiet Place')">
+                        <img src="https://via.placeholder.com/300x450/2C3E50/FFFFFF?text=A+Quiet+Place" alt="A Quiet Place" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">A Quiet Place</h3>
+                            <p class="text-sm text-gray-400">Silent horror</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Get Out')">
+                        <img src="https://via.placeholder.com/300x450/E74C3C/FFFFFF?text=Get+Out" alt="Get Out" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Get Out</h3>
+                            <p class="text-sm text-gray-400">Social thriller</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Hereditary')">
+                        <img src="https://via.placeholder.com/300x450/8E44AD/FFFFFF?text=Hereditary" alt="Hereditary" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Hereditary</h3>
+                            <p class="text-sm text-gray-400">Family horror</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('The Conjuring')">
+                        <img src="https://via.placeholder.com/300x450/3498DB/FFFFFF?text=The+Conjuring" alt="The Conjuring" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">The Conjuring</h3>
+                            <p class="text-sm text-gray-400">Supernatural horror</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Parasite')">
+                        <img src="https://via.placeholder.com/300x450/F39C12/FFFFFF?text=Parasite" alt="Parasite" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Parasite</h3>
+                            <p class="text-sm text-gray-400">Korean thriller</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Animated Features -->
+        <section class="mb-12">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold mb-6">Animated Features</h2>
+                <div class="scroll-container flex space-x-4 pb-4">
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Toy Story')">
+                        <img src="https://via.placeholder.com/300x450/4ECDC4/FFFFFF?text=Toy+Story" alt="Toy Story" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Toy Story</h3>
+                            <p class="text-sm text-gray-400">Pixar classics</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Frozen')">
+                        <img src="https://via.placeholder.com/300x450/3498DB/FFFFFF?text=Frozen" alt="Frozen" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Frozen</h3>
+                            <p class="text-sm text-gray-400">Disney musicals</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Moana')">
+                        <img src="https://via.placeholder.com/300x450/F39C12/FFFFFF?text=Moana" alt="Moana" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Moana</h3>
+                            <p class="text-sm text-gray-400">Polynesian adventure</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Coco')">
+                        <img src="https://via.placeholder.com/300x450/E74C3C/FFFFFF?text=Coco" alt="Coco" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Coco</h3>
+                            <p class="text-sm text-gray-400">Mexican culture celebration</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer" onclick="playMovie('Encanto')">
+                        <img src="https://via.placeholder.com/300x450/FF69B4/FFFFFF?text=Encanto" alt="Encanto" class="w-full h-72 object-cover rounded-lg">
+                        <div class="mt-2">
+                            <h3 class="font-semibold">Encanto</h3>
+                            <p class="text-sm text-gray-400">Colombian magical realism</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Watchlist -->
+        <section class="mb-12">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold mb-6">My Watchlist</h2>
+                <div id="watchlist" class="scroll-container flex space-x-4 pb-4">
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer border-2 border-dashed border-gray-600 flex items-center justify-center h-72 rounded-lg">
+                        <div class="text-center text-gray-400">
+                            <i class="fas fa-plus text-4xl mb-4"></i>
+                            <p>Add movies to your watchlist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <!-- Footer -->
-    <footer class="bg-black bg-opacity-50 mt-16">
-        <div class="container mx-auto px-6 py-12">
+    <footer class="bg-black py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <div class="text-2xl font-bold text-blue-400 mb-4">
-                        <i class="fas fa-play-circle mr-2"></i>StreamPrime
-                    </div>
-                    <p class="text-gray-400">Your premium streaming destination for movies, TV shows, and exclusive content.</p>
+                    <h3 class="text-lg font-semibold mb-4">StreamPrime</h3>
+                    <p class="text-gray-400">Your premium streaming destination for movies, shows, and entertainment.</p>
                 </div>
                 <div>
-                    <h3 class="font-semibold mb-4">Content</h3>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition">Movies</a></li>
-                        <li><a href="#" class="hover:text-white transition">TV Shows</a></li>
-                        <li><a href="#" class="hover:text-white transition">Originals</a></li>
-                        <li><a href="#" class="hover:text-white transition">Live TV</a></li>
+                        <li><a href="#" class="hover:text-white">Home</a></li>
+                        <li><a href="#" class="hover:text-white">Movies</a></li>
+                        <li><a href="#" class="hover:text-white">TV Shows</a></li>
+                        <li><a href="#" class="hover:text-white">My List</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-semibold mb-4">Support</h3>
+                    <h4 class="font-semibold mb-4">Support</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
-                        <li><a href="#" class="hover:text-white transition">Device Support</a></li>
-                        <li><a href="#" class="hover:text-white transition">Account</a></li>
+                        <li><a href="#" class="hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-semibold mb-4">Connect</h3>
+                    <h4 class="font-semibold mb-4">Connect</h4>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
-                            <i class="fab fa-youtube"></i>
-                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
                     </div>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 StreamPrime. All rights reserved. | Privacy Policy | Terms of Service</p>
+                <p>&copy; 2024 StreamPrime. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script>
+        // Search functionality
+        function toggleSearch() {
+            const overlay = document.getElementById('searchOverlay');
+            const input = document.getElementById('searchInput');
+            overlay.classList.toggle('hidden');
+            if (!overlay.classList.contains('hidden')) {
+                input.focus();
+            }
+        }
+
+        // Movie data for search
+        const movies = [
+            {title: "Dune: Part Two", genre: "Sci-Fi", year: "2024", description: "Epic sci-fi sequel"},
+            {title: "Deadpool & Wolverine", genre: "Action", year: "2024", description: "Marvel superhero action-comedy"},
+            {title: "Inside Out 2", genre: "Animation", year: "2024", description: "Pixar animated sequel"},
+            {title: "Stranger Things", genre: "Horror", year: "2016", description: "Supernatural horror series"},
+            {title: "The Batman", genre: "Action", year: "2022", description: "Dark Knight returns"},
+            {title: "Avengers: Endgame", genre: "Action", year: "2019", description: "Epic superhero finale"},
+            {title: "Spider-Man: No Way Home", genre: "Action", year: "2021", description: "Multiverse adventure"},
+            {title: "The Godfather", genre: "Crime", year: "1972", description: "Crime saga"},
+            {title: "Pulp Fiction", genre: "Crime", year: "1994", description: "Quentin Tarantino classic"},
+            {title: "Toy Story", genre: "Animation", year: "1995", description: "Pixar classics"}
+        ];
+
+        // Search input handler
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const results = document.getElementById('searchResults');
+            
+            if (query.length === 0) {
+                results.innerHTML = '';
+                return;
+            }
+
+            const filteredMovies = movies.filter(movie => 
+                movie.title.toLowerCase().includes(query) || 
+                movie.genre.toLowerCase().includes(query)
+            );
+
+            results.innerHTML = filteredMovies.map(movie => `
+                <div class="flex items-center space-x-4 p-3 hover:bg-gray-700 rounded-lg cursor-pointer" onclick="playMovie('${movie.title}')">
+                    <div class="w-16 h-24 bg-gray-600 rounded flex-shrink-0 flex items-center justify-center">
+                        <i class="fas fa-film text-gray-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">${movie.title}</h3>
+                        <p class="text-sm text-gray-400">${movie.year} • ${movie.genre}</p>
+                        <p class="text-sm text-gray-300">${movie.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        });
+
+        // Watchlist functionality
+        let watchlist = [];
+
+        function addToWatchlist(movieTitle) {
+            if (!watchlist.includes(movieTitle)) {
+                watchlist.push(movieTitle);
+                updateWatchlistDisplay();
+                showNotification(`${movieTitle} added to your watchlist!`);
+            } else {
+                showNotification(`${movieTitle} is already in your watchlist!`);
+            }
+        }
+
+        function removeFromWatchlist(movieTitle) {
+            watchlist = watchlist.filter(title => title !== movieTitle);
+            updateWatchlistDisplay();
+            showNotification(`${movieTitle} removed from your watchlist!`);
+        }
+
+        function updateWatchlistDisplay() {
+            const watchlistContainer = document.getElementById('watchlist');
+            
+            if (watchlist.length === 0) {
+                watchlistContainer.innerHTML = `
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer border-2 border-dashed border-gray-600 flex items-center justify-center h-72 rounded-lg">
+                        <div class="text-center text-gray-400">
+                            <i class="fas fa-plus text-4xl mb-4"></i>
+                            <p>Add movies to your watchlist</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                watchlistContainer.innerHTML = watchlist.map(title => `
+                    <div class="flex-shrink-0 w-48 card-hover cursor-pointer relative" onclick="playMovie('${title}')">
+                        <img src="https://via.placeholder.com/300x450/4ECDC4/FFFFFF?text=${encodeURIComponent(title)}" alt="${title}" class="w-full h-72 object-cover rounded-lg">
+                        <button onclick="event.stopPropagation(); removeFromWatchlist('${title}')" class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-700">
+                            <i class="fas fa-times text-sm"></i>
+                        </button>
+                        <div class="mt-2">
+                            <h3 class="font-semibold">${title}</h3>
+                            <p class="text-sm text-gray-400">In your watchlist</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Play movie function
+        function playMovie(title) {
+            document.getElementById('searchOverlay').classList.add('hidden');
+            showNotification(`Playing ${title}...`);
+            // Here you would integrate with your video player
+        }
+
+        // Notification system
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-4 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
         // Smooth scrolling for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Dynamic header background on scroll
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.classList.add('bg-black');
-                header.classList.remove('bg-opacity-80');
-            } else {
-                header.classList.remove('bg-black');
-                header.classList.add('bg-opacity-80');
-            }
-        });
-
-        // Content card interactions
-        document.querySelectorAll('.content-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.zIndex = '10';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.zIndex = '1';
-            });
-        });
-
-        // Search functionality placeholder
-        document.querySelector('input[type="text"]').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                alert('Search functionality would be implemented here: ' + this.value);
-            }
-        });
-
-        // Play button interactions
-        document.querySelectorAll('.play-button, .content-card').forEach(element => {
-            element.addEventListener('click', function() {
-                if (this.classList.contains('play-button')) {
-                    alert('Video player would launch here');
-                } else {
-                    alert('Content details page would open here');
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateWatchlistDisplay();
         });
     </script>
 </body>
